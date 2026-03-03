@@ -79,8 +79,6 @@ export const words: Word[] = [
     urlAudio: "pathOfSound",
     categoryIds: ["body"]
   },
-
-
    {
     id: "axftri07",
     english: "run",
@@ -106,7 +104,7 @@ export const words: Word[] = [
     categoryIds: ["food"]
   },
   {
-    id: "axftri07",
+    id: "axftri073",
     english: "run",
     portuguese: "correr",
     image: {
@@ -118,7 +116,57 @@ export const words: Word[] = [
     categoryIds: ["body"]
   },
   {
-    id: "axftri08",
+    id: "axftri077",
+    english: "api",
+    portuguese: "api",
+    image: {
+      id: "iddaimage02",
+      name: "api",
+      url: api,
+    },
+    urlAudio: "pathOfSound",
+    categoryIds: ["food"]
+  },
+
+
+  {
+    id: "axftri09",
+    english: "run",
+    portuguese: "correr",
+    image: {
+      id: "iddaimage",
+      name: "run",
+      url: run,
+    },
+    urlAudio: "pathOfSound",
+    categoryIds: ["food"]
+  },
+  {
+    id: "axftri010",
+    english: "api",
+    portuguese: "api",
+    image: {
+      id: "iddaimage02",
+      name: "api",
+      url: api,
+    },
+    urlAudio: "pathOfSound",
+    categoryIds: ["food"]
+  },
+  {
+    id: "axftri011",
+    english: "run",
+    portuguese: "correr",
+    image: {
+      id: "iddaimage",
+      name: "run",
+      url: run,
+    },
+    urlAudio: "pathOfSound",
+    categoryIds: ["food"]
+  },
+  {
+    id: "axftri012",
     english: "api",
     portuguese: "api",
     image: {

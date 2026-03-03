@@ -10,7 +10,7 @@ const Category = () => {
   )
 
   return (
-    <div className="p-4 grid grid-cols-2 gap-4">
+    <div className="p-4 grid grid-cols-5 gap-4">
       {filteredWords.map(word => (
         <Card
           key={word.id} 
