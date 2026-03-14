@@ -56,6 +56,7 @@ const Categories = () => {
 
 				</div>
 
+        {/* Formulário Para Criar uma Nova Categoria */}
 				{showForm && (
 					<div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center">
 						

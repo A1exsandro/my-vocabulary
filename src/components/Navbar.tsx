@@ -1,7 +1,8 @@
-import { useUserStore } from "../store/userStore"
+import useAuthStore from "../store/useAuthStore"
 
 const Navbar = () => {
-  const currentUser = useUserStore((state) => state.currentUser)
+  const { user } = useAuthStore()
+
   return (
     <>
       {/* NAVBAR */}
@@ -22,7 +23,7 @@ const Navbar = () => {
 
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-green-600 rounded-full"></div>
-            {currentUser?.name}
+            {user?.name}
           </div>
         </div>
       </nav>

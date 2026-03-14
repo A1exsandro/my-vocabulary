@@ -1,19 +1,19 @@
-import { useUserStore } from "../store/userStore"
+import useAuthStore from "../store/useAuthStore"
 import { Link } from "react-router-dom"
 
 const Profile = () => {
-  const currentUser = useUserStore((state) => state.currentUser)
+  const { user } = useAuthStore()
 
 
   return (
     <div className="">
       <div className="text-lg font-semibold">
-        Usuário logado: {currentUser?.name}
+        Usuário logado: {user?.name}
       </div>
 
       <div className="flex justify-center gap-6 mt-10">
         <Link
-          to={`/profile/${currentUser?.id}/categories/`}
+          to={`/profile/${user?.id}/categories/`}
           className="w-40 h-56 rounded-2xl 
           bg-linear-to-r from bg-gray-900 to-blue-800 
           text-white shadow-lg
