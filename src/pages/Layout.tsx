@@ -1,23 +1,14 @@
-import { Outlet, useParams } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import Navbar from '../components/Navbar'
-
-import { useUserStore } from "../store/userStore"
-import { users } from "../mock/users"
+import { ToastContainer } from 'react-toastify'
 
 const Layout = () => {
-  const { userId } = useParams()
-
-  const setCurrentUser = useUserStore((state) => state.setCurrentUser)
-  const user = users.find(user => user.id === userId)
-
-  if (user) {
-    setCurrentUser(user)
-  }
 
   return (
     <>
       <Navbar />
-      
+      <ToastContainer position="top-center" />
+  
       <div className="mt-4">
         <Outlet />
       </div>

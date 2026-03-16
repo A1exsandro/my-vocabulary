@@ -5,9 +5,14 @@ interface CardProps {
   word: Word
 }
 
-const Card = ({word}: CardProps) => {
-	const [flipped, setFlipped] = useState(false)
+const CardFlip = ({word}: CardProps) => {
+  const [flipped, setFlipped] = useState(false)
   const[menuOpen,setMenuOpen] = useState(false)
+  
+  const playAudio = (e: any, url: any) => {
+    e.stopPropagation()
+    new Audio(url).play()
+  }
 
 	return (
 		<div 
@@ -25,15 +30,16 @@ const Card = ({word}: CardProps) => {
         <div className="absolute w-full h-full backface-hidden rounded-xl 
           overflow-hidden shadow-lg bg-black">
           <img
-            src={word.image.url}
-            alt={word.image.name}
+            src={word.imageUrl}
+            alt={word.english}
             className="w-full h-full object-cover
             transition duration-700 ease-in-out hover:scale-105"
           />
 
           <div className="absolute bottom-0 left-0 w-full p-2 flex justify-around">
             
-            <button 
+            <button
+              onClick={(e) => playAudio(e, word.audioUrl)} 
               className="text-white text-sm bg-gray-800 px-2 py-1 rounded 
                 hover:bg-gray-700">
               🔊
@@ -86,6 +92,7 @@ const Card = ({word}: CardProps) => {
               </button>
 
               <button 
+                onClick={(e) => playAudio(e, word.audioUrl)}
                 className="px-4 py-2 hover:bg-gray-700 text-sm">
                   🔊 Audio
               </button>
@@ -93,10 +100,25 @@ const Card = ({word}: CardProps) => {
           )}
           {/* Conteúdo principal do verso */}
           <p className="text-lg font-semibold">{word.english}</p>
+
+          {/* Phrases */}
+          <div className="mt-8">
+            {
+              word.phrases.map((phrase) => (
+                <div 
+                  key={phrase.id}
+                  onClick={(e) => playAudio(e, phrase.audioUrl)}
+                  className="text-sm m-2 hover:cursor-pointer hover:scale-105"
+                >
+                  {phrase.text}
+                </div>
+              ))
+            }
+          </div>
         </div>
       </div>
 		</div>
 	)
 }
 
-export default Card
+export default CardFlip

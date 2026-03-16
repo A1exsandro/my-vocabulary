@@ -1,27 +1,66 @@
 import { useParams } from "react-router-dom"
-import { categories } from "../mock/categories"
 import CategoryCard from "../components/CategoryCard"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import { toast } from 'react-toastify'
 
+const BASE_URL_API = import.meta.env.VITE_BASE_URL_API
 
 const Categories = () => {
   const { userId } = useParams()
 
-  const filteredCategory = categories.filter( category =>
-    category.userId.includes(userId || '')
-  )
-
-	const [words, setWords] = useState<string[]>([])
-	const [newWord, setNewWord] = useState("")
+  
+	const [categories, setCategories] = useState([]) 
+	const [newCategory, setNewCategory] = useState("")
 	const [showForm, setShowForm] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
 
-	const addWord = () => {
-  if (!newWord) return
+  useEffect(() => {
+    fetchCategories()
+  }, [isSuccess])
 
-  setWords([...words, newWord])
-  setNewWord("")
-  setShowForm(false)
-}
+  // READ
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL_API}/api/vacabulary/category/categories_by_user`,
+        {
+          params: {
+            user_id: userId
+          }
+        }
+      )
+
+      console.log('---- resposta vindo da Api-----', response.data)
+      setCategories(response.data)
+      // setIsLoading(false)
+    } catch (error) {
+      console.log('---- error ----', error)
+    }
+  }
+
+
+  // - [ ] Remover para o hook
+  // CREATE
+  const addNewCategory =  async() => {
+    if (!newCategory) return
+
+    try {
+      const response = await axios.post(`${BASE_URL_API}/api/vacabulary/category`, 
+        {
+          name: newCategory,
+          user_id: userId
+        }
+      )
+
+      toast.success(response.data.detail)
+      setIsSuccess(true)
+      console.log(response)
+      setNewCategory('')
+      setShowForm(false)
+    } catch (error) {
+      console.log('----- error ---', error)
+    }
+  }
 
 	return (
 		
@@ -37,65 +76,49 @@ const Categories = () => {
 			{/* Lista */}
 				<div className="grid  grid-cols-4 mt-6 ml-3 gap-4">
 
-					{words.map((word, index) => (
-						<div
-							key={index}
-							className="w-40 h-56 rounded-2xl 
-								bg-linear-to-r from-gray-900 to-blue-800 
-								text-white shadow-lg
-								flex items-center justify-center text-lg font-medium
-								hover:scale-105 hover:shadow-2xl transition"
-						>
-							{word}
-						</div>
-					))}
-
-					{filteredCategory.map((category) => (
+					{categories.map((category) => (
 						<CategoryCard key={category.id} category={category} />
 					))}
 
 				</div>
 
-				{showForm && (
-					<div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center">
-						
-						<div className="bg-white p-6 rounded shadow-lg w-80">
-							
-							<h2 className="text-lg font-bold mb-4">
-								Nova Palavra
-							</h2>
+          {/* Formulário Para Criar uma Nova Categoria */}
+          {/* - [ ] Remover para um componente, e chamar o componente aqui */}
+          {showForm && (
+            <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+              
+              <div className="bg-white p-6 rounded shadow-lg w-80">
+                
+                <h2 className="text-lg font-bold mb-4">
+                  Nova Palavra
+                </h2>
 
-							<input
-								value={newWord}
-								onChange={(e) => setNewWord(e.target.value)}
-								className="border w-full p-2 mb-4"
-								placeholder="Digite a palavra"
-							/>
+                <input
+                  value={newCategory}
+                  onChange={(e) => setNewCategory(e.target.value)}
+                  className="border w-full p-2 mb-4"
+                  placeholder="Digite a palavra"
+                />
 
-							<div className="flex gap-2">
-								<button
-									onClick={addWord}
-									className="bg-green-500 text-white px-4 py-2 rounded"
-								>
-									Adicionar
-								</button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={addNewCategory}
+                    className="bg-green-500 text-white px-4 py-2 rounded"
+                  >
+                    Adicionar
+                  </button>
 
-								<button
-									onClick={() => setShowForm(false)}
-									className="bg-gray-400 text-white px-4 py-2 rounded"
-								>
-									Cancelar
-								</button>
-							</div>
+                  <button
+                    onClick={() => setShowForm(false)}
+                    className="bg-gray-400 text-white px-4 py-2 rounded"
+                  >
+                    Cancelar
+                  </button>
+                </div>
 
-						</div>
-					</div>
-				)}
-
-{/* 
-					{filteredCategory.map((category) => (
-						<CategoryCard key={category.id} category={category} />
-					))} */}
+              </div>
+            </div>
+          )}
 				</div>
 	)
 }

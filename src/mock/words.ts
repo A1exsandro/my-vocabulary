@@ -54,8 +54,8 @@ export const words: Word[] = [
       url: api,
     },
     urlAudio: "pathOfSound",
-    categoryIds: ["greeting"],
-     userId: '01002'
+    categoryIds: ["f1cb938e-1a38-46c7-bc6a-d0611efb013b"],
+     userId: 'df17bf20-37e7-4a97-a3cb-dd274fb0bbde'
   },
 ];
 
