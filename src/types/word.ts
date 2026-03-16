@@ -1,11 +1,10 @@
-import type { Image } from "./image";
-
 export interface Word {
   id: string;
   english: string;
   portuguese: string;
-  image: Image;
-  urlAudio: string;
+  phrases: string[]; // - [ ] converter para um objeto
+  imageUrl: string;
+  audioUrl: string;
   categoryIds?: string[];
-   userId: string
+  userId: string
 }

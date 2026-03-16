@@ -13,9 +13,9 @@ export default function Home() {
 				{/* <div className="grid grid-cols-2 gap-4">
 					{users.map((user) => (
 						<Card 
-              key={user.id} 
-              user={user} 
-            />
+							key={user.id} 
+							user={user} 
+						/>
 					))}
 				</div> */}
 
