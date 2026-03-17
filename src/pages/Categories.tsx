@@ -1,19 +1,21 @@
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import CategoryCard from "../components/CategoryCard"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { toast } from 'react-toastify'
+import Grid from "../components/Grid"
 
 const BASE_URL_API = import.meta.env.VITE_BASE_URL_API
 
 const Categories = () => {
   const { userId } = useParams()
-
+  
   
 	const [categories, setCategories] = useState([]) 
 	const [newCategory, setNewCategory] = useState("")
 	const [showForm, setShowForm] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+
 
   useEffect(() => {
     fetchCategories()
@@ -65,7 +67,7 @@ const Categories = () => {
 	return (
 		
 		<div className="ml-4">
-			<button
+      <button
 				onClick={() => setShowForm(true)}
 				className="bg-linear-to-l from-gray-900 to-blue-800 
 					text-white px-4 py-2 rounded ml-3"
@@ -74,13 +76,13 @@ const Categories = () => {
 			</button>
 
 			{/* Lista */}
-				<div className="grid  grid-cols-4 mt-6 ml-3 gap-4">
+				<Grid>
 
 					{categories.map((category) => (
 						<CategoryCard key={category.id} category={category} />
 					))}
 
-				</div>
+				</Grid>
 
           {/* Formulário Para Criar uma Nova Categoria */}
           {/* - [ ] Remover para um componente, e chamar o componente aqui */}

@@ -16,7 +16,7 @@ const CardFlip = ({word}: CardProps) => {
 
 	return (
 		<div 
-			className="w-full aspect-5/6 perspective"
+			className="w-full aspect-5/8 perspective"
 			onClick={() => setFlipped(!flipped)}
 		>
 
@@ -74,8 +74,6 @@ const CardFlip = ({word}: CardProps) => {
              ☰
           </button>
           
-          
-          {/* Menu suspenso */}
           {menuOpen &&(
             <div className="absolute top-12 left-2 bg-gray-800 rounded-lg 
               shadow-lg flex flex-col"
@@ -88,7 +86,7 @@ const CardFlip = ({word}: CardProps) => {
 
               <button 
                 className="px-4 py-2 hover:bg-gray-700 text-sm">
-                  Português
+                  Portuguese
               </button>
 
               <button 
@@ -108,7 +106,7 @@ const CardFlip = ({word}: CardProps) => {
                 <div 
                   key={phrase.id}
                   onClick={(e) => playAudio(e, phrase.audioUrl)}
-                  className="text-sm m-2 hover:cursor-pointer hover:scale-105"
+                  className="text-[0.7rem] m-2 hover:cursor-pointer hover:scale-105"
                 >
                   {phrase.text}
                 </div>

@@ -1,14 +1,14 @@
-import { FaSpinner } from 'react-icons/fa'
+import { ImSpinner9 } from "react-icons/im";
 
 const AuthLoadingScreen = () => (
   <div className="w-screen h-screen flex flex-col justify-center items-center">
     {/* <FaLock className="text-blue-800 mb-4" size={48} /> */}
-    <FaSpinner 
+    <ImSpinner9 
       className="text-blue-800" 
       size={36} 
       style={{ animation: 'spin 1s linear infinite' }} 
     />
-    <h2 className="mb-3 text-4xl">Verificando credenciais...</h2>
+    <h2 className="mb-3 text-4xl">Quase lá...</h2>
     <p className="text-zinc-600">Aguarde enquanto validamos seu acesso</p>
     
     {/* Estilo inline para a animação */}

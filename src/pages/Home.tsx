@@ -1,4 +1,5 @@
 import Card from "../components/Card"
+import Grid from "../components/Grid"
 import  useAuthStore from "../store/useAuthStore"
 
 export default function Home() {
@@ -19,12 +20,12 @@ export default function Home() {
 					))}
 				</div> */}
 
-				<div className="grid grid-cols-2 gap-4">
+				<Grid>
 					<Card 
 						key={user?.id} 
 						user={user} 
 					/>
-				</div>
+				</Grid>
 			</div>
 		
 		</>

@@ -1,5 +1,7 @@
+import { useNavigate } from "react-router-dom"
 import useAuthStore from "../store/useAuthStore"
 import { Link } from "react-router-dom"
+
 
 const Profile = () => {
   const { user } = useAuthStore()
@@ -7,10 +9,6 @@ const Profile = () => {
 
   return (
     <div className="">
-      <div className="text-lg font-semibold">
-        Usuário logado: {user?.name}
-      </div>
-
       <div className="flex justify-center gap-6 mt-10">
         <Link
           to={`/profile/${user?.id}/categories/`}

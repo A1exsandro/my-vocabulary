@@ -1,21 +1,39 @@
+import { useState } from "react"
+import { Menu } from "lucide-react"
 import useAuthStore from "../store/useAuthStore"
+import { IoCloseSharp } from "react-icons/io5"
+import Sidebar from "./Sidebar";
 
 const Navbar = () => {
   const { user } = useAuthStore()
+  const [open, setOpen] = useState(false)
 
   return (
     <>
       {/* NAVBAR */}
       <nav 
-        className="bg-gray-900 text-white p-4 w-full"
+        className="relative bg-gray-900 text-white p-4 w-full"
       >
+        {/* BOTÃO MENU */}
+        <button
+          onClick={() => setOpen(prev => !prev)}
+          className="absolute hover:cursor-pointer z-50"
+        >
+          {
+            open ?
+            <IoCloseSharp size={18} />
+            :
+            <Menu size={18} />
+          }
+        </button>
+
         <div 
           className="relative flex justify-end"
         >
 
           {/* Nome centralizado */}
           <div 
-            className="absolute left-1/2 transform -translate-x-1/2"
+            className="absolute left-1/2 text-2xl transform -translate-x-1/2"
           >
             My Vocabulary
 
@@ -27,6 +45,11 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
+
+      <Sidebar 
+        open={open}
+        setOpen={setOpen}
+      />
     </>
   )
 }

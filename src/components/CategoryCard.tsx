@@ -12,7 +12,7 @@ const CategoryCard = ({ category }: Props) => {
   return (
     <Link
       to={`/profile/${user?.id}/category/${category.id}`}
-      className="w-40 h-56 rounded-2xl 
+      className="rounded-2xl 
           bg-linear-to-l from bg-gray-900 to-blue-800 
           text-white shadow-lg
           flex items-center justify-center text-lg font-medium

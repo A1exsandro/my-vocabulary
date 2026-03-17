@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom"
 // import { words } from "../mock/words"
 import CardFlip from "../components/CardFlip"
 import { useEffect, useState } from "react"
+import Grid from "../components/Grid"
 
 const BASE_URL_API = import.meta.env.VITE_BASE_URL_API
 
@@ -65,26 +66,24 @@ const Category = () => {
   }
 
   return (
-    <div className="ml-4">
+    <div className="max-w-7xl mx-auto px-4">
 			<button
 				onClick={() => setShowForm(true)}
 				className="bg-linear-to-l from-gray-900 to-blue-800 
-					text-white px-4 py-2 rounded ml-3"
+    text-white px-4 py-2 rounded"
 				>
 				+ Adicionar Palavra
 			</button>
 
 			{/* Lista */}
-      <div className="grid  grid-cols-4 mt-6 ml-3 gap-4">
-
+      <Grid>
         {words.map(word => (
           <CardFlip
             // key={word.id} 
             word={word}
           />
         ))}
-
-      </div>
+      </Grid>
 
         {/* Formulário Para Criar uma Nova Categoria */}
         {/* - [ ] Remover para um componente, e chamar o componente aqui */}
