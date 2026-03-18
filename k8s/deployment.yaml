@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vocabulary-app
+  labels:
+    app: vocabulary-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vocabulary-app
+  template:
+    metadata:
+      labels:
+        app: vocabulary-app
+    spec:
+      imagePullSecrets:
+      - name: registry-secret
+      containers:
+        - name: vocabulary-app
+          image: registry.nst.art.br/vocabulary-app:0.0.1
+          ports:
+            - containerPort: 80
