@@ -1,5 +1,6 @@
 import { useState } from "react"
 import type { Word } from "../types/word"
+import type { Phrase } from "../types/phrase"
 
 interface CardProps {
   word: Word
@@ -9,7 +10,10 @@ const CardFlip = ({word}: CardProps) => {
   const [flipped, setFlipped] = useState(false)
   const[menuOpen,setMenuOpen] = useState(false)
   
-  const playAudio = (e: any, url: any) => {
+  const playAudio = (
+    e: React.MouseEvent<HTMLButtonElement>, 
+    url: string
+  ) => {
     e.stopPropagation()
     new Audio(url).play()
   }
@@ -102,7 +106,7 @@ const CardFlip = ({word}: CardProps) => {
           {/* Phrases */}
           <div className="mt-8">
             {
-              word.phrases.map((phrase: any) => (
+              word.phrases.map((phrase: Phrase) => (
                 <div 
                   key={phrase.id}
                   onClick={(e) => playAudio(e, phrase.audioUrl)}
