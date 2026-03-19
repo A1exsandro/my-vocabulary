@@ -4,6 +4,7 @@ import { FaArrowCircleLeft } from "react-icons/fa"
 import { RiHomeHeartFill } from "react-icons/ri"
 import { FaUserTie } from "react-icons/fa"
 import { GrDocumentConfig } from "react-icons/gr"
+import useAuthStore from "../store/useAuthStore"
 
 type SidebarProps = {
   open: boolean
@@ -14,8 +15,10 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
   const navigate = useNavigate()
   const goHistory = (value: number) => {
     setOpen(false) // fecha sidebar
-    navigate(value) // navega
-}
+      navigate(value) // navega
+  }
+
+  const { user } = useAuthStore()
 
   return (
     <div
@@ -43,14 +46,26 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
           Home
         </li>
 
-        <li className="flex items-center gap-2 hover:text-blue-600 cursor-pointer">
+        <li 
+          onClick={() => {
+            setOpen(!open) 
+            navigate(`/profile/${user?.id}`)
+          }}
+          className="flex items-center gap-2 hover:text-blue-600 cursor-pointer"
+        >
           <FaUserTie />
           Perfil
         </li>
 
-        <li className="flex items-center gap-2 hover:text-blue-600 cursor-pointer">
+        <li 
+          onClick={() => {
+            setOpen(!open) 
+            navigate(`/profile/${user?.id}/categories`)
+          }}
+          className="flex items-center gap-2 hover:text-blue-600 cursor-pointer"
+        >
           <GrDocumentConfig />
-          Configurações
+          Categorias
         </li>
 
         <div 
