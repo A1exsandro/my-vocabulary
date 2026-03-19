@@ -4,6 +4,9 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { toast } from 'react-toastify'
 import Grid from "../components/Grid"
+import LoadingScreen from "../components/LoadingScreen"
+import type { Category } from "../types/category"
+
 
 const BASE_URL_API = import.meta.env.VITE_BASE_URL_API
 
@@ -11,10 +14,12 @@ const Categories = () => {
   const { userId } = useParams()
   
   
-	const [categories, setCategories] = useState([]) 
+	const [categories, setCategories] = useState<Category[]>([]) 
 	const [newCategory, setNewCategory] = useState("")
 	const [showForm, setShowForm] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  
 
 
   useEffect(() => {
@@ -24,7 +29,8 @@ const Categories = () => {
   // READ
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(`${BASE_URL_API}/api/vacabulary/category/categories_by_user`,
+      const response = await axios.get<Category[]>(
+        `${BASE_URL_API}/api/vacabulary/category/categories_by_user`,
         {
           params: {
             user_id: userId
@@ -34,7 +40,7 @@ const Categories = () => {
 
       console.log('---- resposta vindo da Api-----', response.data)
       setCategories(response.data)
-      // setIsLoading(false)
+      setIsLoading(false)
     } catch (error) {
       console.log('---- error ----', error)
     }
@@ -44,9 +50,15 @@ const Categories = () => {
   // - [ ] Remover para o hook
   // CREATE
   const addNewCategory =  async() => {
-    if (!newCategory) return
+    if (!newCategory) return toast.warning('O campo não pode ser vazio!')
+      
+  
+    setIsLoading(true)
 
     try {
+
+      setShowForm(false)
+      
       const response = await axios.post(`${BASE_URL_API}/api/vacabulary/category`, 
         {
           name: newCategory,
@@ -54,19 +66,31 @@ const Categories = () => {
         }
       )
 
+      setIsLoading(false)
       toast.success(response.data.detail)
       setIsSuccess(true)
       console.log(response)
       setNewCategory('')
-      setShowForm(false)
     } catch (error) {
+      setIsLoading(false)
+      // - [ ] tratar o erro e mostrar a mensagem ao usuário
+      toast.error('Algum erro aconteceu!')
       console.log('----- error ---', error)
     }
   }
 
 	return (
 		
-		<div className="ml-4">
+		<div className="max-w-7xl mx-auto px-4">
+      {/* Loading */}
+      {
+        isLoading &&
+        <LoadingScreen 
+          title="Quase lá..."
+          content="Estamos Criando Sua Nova Categoria"
+        />
+      }
+
       <button
 				onClick={() => setShowForm(true)}
 				className="bg-linear-to-l from-gray-900 to-blue-800 
@@ -78,7 +102,7 @@ const Categories = () => {
 			{/* Lista */}
 				<Grid>
 
-					{categories.map((category: any) => (
+					{categories.map((category) => (
 						<CategoryCard key={category.id} category={category} />
 					))}
 
@@ -87,7 +111,10 @@ const Categories = () => {
           {/* Formulário Para Criar uma Nova Categoria */}
           {/* - [ ] Remover para um componente, e chamar o componente aqui */}
           {showForm && (
-            <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+            <div 
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm flex 
+                items-center justify-center"
+            >
               
               <div className="bg-white p-6 rounded shadow-lg w-80">
                 

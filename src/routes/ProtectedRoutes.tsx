@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useRef } from "react"
 import { Outlet } from "react-router-dom"
-import AuthLoadingScreen from "../components/AuthLoadingScreen"
+import LoadingScreen from "../components/LoadingScreen"
 import kc from "../service/keycloak"
 import useAuthStore from "../store/useAuthStore"
 
@@ -113,7 +113,7 @@ const ProtectedRoutes = () => {
 
   if (authenticated === null) {
     return (
-      <AuthLoadingScreen 
+      <LoadingScreen 
         title="Quase lá..."
         content="Aguarde enquanto validamos seu acesso"
       />

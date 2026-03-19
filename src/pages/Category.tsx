@@ -6,15 +6,18 @@ import { useParams } from "react-router-dom"
 import CardFlip from "../components/CardFlip"
 import { useEffect, useState } from "react"
 import Grid from "../components/Grid"
+import LoadingScreen from "../components/LoadingScreen"
+import type { Word } from "../types/word"
 
 const BASE_URL_API = import.meta.env.VITE_BASE_URL_API
 
 const Category = () => {
   const { categoryId, userId } = useParams()
-  const [words, setWords] = useState([])
+  const [words, setWords] = useState<Word[]>([])
   const [newWord, setNewWord] = useState("")
 	const [showForm, setShowForm] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     fetchWords()
@@ -22,12 +25,15 @@ const Category = () => {
 
   // READ
   const fetchWords = async () => {
+
     try {
-      const response = await axios.get(`${BASE_URL_API}/api/vacabulary/word/words`,
+
+      const response = await axios.get<Word[]>(
+        `${BASE_URL_API}/api/vacabulary/word/words`,
         {
           params: {
-            user_id: userId,
-            category_id: categoryId
+          user_id: userId,
+          category_id: categoryId
           }
         }
       )
@@ -44,9 +50,12 @@ const Category = () => {
   // - [ ] Remover para o hook
   // CREATE
   const addNewWord =  async() => {
-    if (!newWord) return
+    if (!newWord) return toast.warning('O campo não pode ser vazio!')
+
+    setIsLoading(true)
 
     try {
+      setShowForm(false)
       const response = await axios.post(`${BASE_URL_API}/api/vacabulary/word`, 
         {
           english: newWord,
@@ -55,18 +64,31 @@ const Category = () => {
         }
       )
 
+      setIsLoading(false)
       toast.success(response.data.detail)
       setIsSuccess(true)
       console.log(response)
       setNewWord('')
-      setShowForm(false)
     } catch (error) {
+      setIsLoading(false)
+      // - [ ] tratar o erro e mostrar a mensagem ao usuário
+      toast.error('Algum erro aconteceu!')
       console.log('----- error ---', error)
     }
   }
 
   return (
     <div className="max-w-7xl mx-auto px-4">
+
+      {/* Loading */}
+      {
+        isLoading &&
+        <LoadingScreen 
+          title="Quase lá..."
+          content="Estamos Criando Sua Nova Palavra"
+        />
+      }
+
 			<button
 				onClick={() => setShowForm(true)}
 				className="bg-linear-to-l from-gray-900 to-blue-800 
@@ -79,7 +101,7 @@ const Category = () => {
       <Grid>
         {words.map(word => (
           <CardFlip
-            // key={word.id} 
+            key={word.id} 
             word={word}
           />
         ))}
@@ -88,7 +110,10 @@ const Category = () => {
         {/* Formulário Para Criar uma Nova Categoria */}
         {/* - [ ] Remover para um componente, e chamar o componente aqui */}
         {showForm && (
-          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+          <div 
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm flex 
+              items-center justify-center"
+          >
             
             <div className="bg-white p-6 rounded shadow-lg w-80">
               

@@ -1,6 +1,6 @@
 import { ImSpinner9 } from "react-icons/im";
 
-const AuthLoadingScreen = ({title, content}: {title: string, content:string}) => (
+const LoadingScreen = ({title, content}: {title: string, content:string}) => (
   <div className="w-screen h-screen flex flex-col justify-center items-center">
     {/* <FaLock className="text-blue-800 mb-4" size={48} /> */}
     <ImSpinner9 
@@ -23,4 +23,4 @@ const AuthLoadingScreen = ({title, content}: {title: string, content:string}) =>
   </div>
 );
 
-export default AuthLoadingScreen
+export default LoadingScreen
