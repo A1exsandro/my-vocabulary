@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import CategoryCard from "../components/CategoryCard"
 import { useEffect, useState } from "react"
 import axios from "axios"
@@ -78,7 +78,7 @@ const Categories = () => {
 			{/* Lista */}
 				<Grid>
 
-					{categories.map((category) => (
+					{categories.map((category: any) => (
 						<CategoryCard key={category.id} category={category} />
 					))}
 

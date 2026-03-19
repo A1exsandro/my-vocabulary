@@ -102,7 +102,7 @@ const CardFlip = ({word}: CardProps) => {
           {/* Phrases */}
           <div className="mt-8">
             {
-              word.phrases.map((phrase) => (
+              word.phrases.map((phrase: any) => (
                 <div 
                   key={phrase.id}
                   onClick={(e) => playAudio(e, phrase.audioUrl)}

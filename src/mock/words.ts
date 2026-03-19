@@ -1,33 +1,26 @@
 import type { Word } from "../types/word"
-import run from "../assets/run.jpg"
-import api from "../assets/api-integration-logistics.png"
 
 export const words: Word[] = [
   {
     id: "axftri01",
     english: "run",
     portuguese: "correr",
-    image: {
-      id: "iddaimage",
-      name: "run",
-      url: run,
-    },
-    urlAudio: "pathOfSound",
+    imageUrl: '',
+    audioUrl: "pathOfSound",
     categoryIds: ["body"],
-    userId: '01002'
+    userId: '01002',
+    phrases: []
   },
   {
     id: "axftri02",
     english: "api",
     portuguese: "api",
-    image: {
-      id: "iddaimage02",
-      name: "api",
-      url: api,
-    },
-    urlAudio: "pathOfSound",
+    imageUrl: '',
+    audioUrl: "pathOfSound",
     categoryIds: ["body"],
-     userId: '01002'
+    userId: '01002'
+     ,
+    phrases: []
   },
 
 
@@ -35,27 +28,21 @@ export const words: Word[] = [
     id: "axftri03",
     english: "run",
     portuguese: "correr",
-    image: {
-      id: "iddaimage",
-      name: "run",
-      url: run,
-    },
-    urlAudio: "pathOfSound",
+    imageUrl: '',
+    audioUrl: "pathOfSound",
     categoryIds: ["food"],
-     userId: '01003'
+    userId: '01003',
+    phrases: []
   },
   {
     id: "axftri04",
     english: "api",
     portuguese: "api",
-    image: {
-      id: "iddaimage02",
-      name: "api",
-      url: api,
-    },
-    urlAudio: "pathOfSound",
+    imageUrl: '',
+    audioUrl: "pathOfSound",
     categoryIds: ["f1cb938e-1a38-46c7-bc6a-d0611efb013b"],
-     userId: 'df17bf20-37e7-4a97-a3cb-dd274fb0bbde'
+    userId: 'df17bf20-37e7-4a97-a3cb-dd274fb0bbde',
+    phrases: []
   },
 ];
 
