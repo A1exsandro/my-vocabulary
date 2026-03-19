@@ -11,7 +11,7 @@ const CardFlip = ({word}: CardProps) => {
   const[menuOpen,setMenuOpen] = useState(false)
   
   const playAudio = (
-    e: React.MouseEvent<HTMLButtonElement>, 
+    e: React.MouseEvent<HTMLElement>, 
     url: string
   ) => {
     e.stopPropagation()
