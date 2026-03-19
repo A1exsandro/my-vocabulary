@@ -112,7 +112,12 @@ const ProtectedRoutes = () => {
   }, [authenticated, isIdle])
 
   if (authenticated === null) {
-    return <AuthLoadingScreen />
+    return (
+      <AuthLoadingScreen 
+        title="Quase lá..."
+        content="Aguarde enquanto validamos seu acesso"
+      />
+    )
   }
 
   if (!authenticated) {
