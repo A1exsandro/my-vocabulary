@@ -9,6 +9,9 @@ interface CardProps {
 const CardFlip = ({word}: CardProps) => {
   const [flipped, setFlipped] = useState(false)
   const[menuOpen,setMenuOpen] = useState(false)
+
+  const [showTranslation, setShowTranslation] = useState(false)
+  const [editedWord, setEditedWord] = useState(word)
   
   const playAudio = (
     e: React.MouseEvent<HTMLElement>, 
@@ -16,6 +19,36 @@ const CardFlip = ({word}: CardProps) => {
   ) => {
     e.stopPropagation()
     new Audio(url).play()
+  }
+
+
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation()
+
+  const newEnglish = prompt("Editar inglês:", editedWord.english)
+  const newPortuguese = prompt("Editar português:", editedWord.portuguese)
+
+    if (newEnglish && newPortuguese) {
+      setEditedWord({
+        ...editedWord,
+        english: newEnglish,
+        portuguese: newPortuguese
+      })
+    }
+  }
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation()
+
+    const confirmDelete = confirm("Deseja excluir essa palavra?")
+    if (confirmDelete) {
+      console.log("Deletado (mock)")
+    }
+  }
+
+  const handleTranslate = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setShowTranslation(!showTranslation)
   }
 
 	return (
@@ -84,24 +117,41 @@ const CardFlip = ({word}: CardProps) => {
                  onClick={(e) => e.stopPropagation()}
             >
               <button 
-                className="px-4 py-2 hover:bg-gray-700 text-sm">
-                  English
+                onClick={handleEdit}
+                className="px-4 py-2 hover:bg-gray-700 text-sm"
+              >
+                ✏️ Editar
               </button>
 
               <button 
-                className="px-4 py-2 hover:bg-gray-700 text-sm">
-                  Portuguese
+                onClick={handleDelete}
+                className="px-4 py-2 hover:bg-gray-700 text-sm"
+              >
+                🗑️ Excluir
               </button>
 
               <button 
-                onClick={(e) => playAudio(e, word.audioUrl)}
-                className="px-4 py-2 hover:bg-gray-700 text-sm">
-                  🔊 Audio
+                onClick={handleTranslate}
+                className="px-4 py-2 hover:bg-gray-700 text-sm"
+              >
+                🌐 {
+                showTranslation ? 
+                  'Mostrar Tradução Inglês'
+                :
+                  'Mostrar Tradução Portugues' 
+                }
               </button>
             </div>
           )}
           {/* Conteúdo principal do verso */}
-          <p className="text-lg font-semibold">{word.english}</p>
+          <div className="">
+            {
+              showTranslation ?
+                <p className="text-lg font-semibold">{word.portuguese}</p>
+              :
+                <p className="text-lg font-semibold">{word.english}</p>
+            }
+          </div>
 
           {/* Phrases */}
           <div className="mt-8">
@@ -112,7 +162,7 @@ const CardFlip = ({word}: CardProps) => {
                   onClick={(e) => playAudio(e, phrase.audioUrl)}
                   className="text-[0.7rem] m-2 hover:cursor-pointer hover:scale-105"
                 >
-                  {phrase.text}
+                  {showTranslation ? "Iremos adicionar a tradução" : phrase.text}
                 </div>
               ))
             }
