@@ -1,6 +1,10 @@
 import { useState } from "react"
 import type { Word } from "../types/word"
 import type { Phrase } from "../types/phrase"
+import { LiaEyeSlashSolid, LiaEyeSolid } from "react-icons/lia"
+import { CiEdit } from "react-icons/ci"
+import { MdDeleteOutline } from "react-icons/md"
+import { PiSpeakerHigh } from "react-icons/pi"
 
 interface CardProps {
   word: Word
@@ -8,7 +12,6 @@ interface CardProps {
 
 const CardFlip = ({word}: CardProps) => {
   const [flipped, setFlipped] = useState(false)
-  const[menuOpen,setMenuOpen] = useState(false)
 
   const [showTranslation, setShowTranslation] = useState(false)
   const [editedWord, setEditedWord] = useState(word)
@@ -65,7 +68,7 @@ const CardFlip = ({word}: CardProps) => {
 			>
         {/* Frente */}
         <div className="absolute w-full h-full backface-hidden rounded-xl 
-          overflow-hidden shadow-lg bg-black">
+          overflow-hidden shadow-lg">
           <img
             src={word.imageUrl}
             alt={word.english}
@@ -73,13 +76,17 @@ const CardFlip = ({word}: CardProps) => {
             transition duration-700 ease-in-out hover:scale-105"
           />
 
-          <div className="absolute bottom-0 left-0 w-full p-2 flex justify-around">
+          <div className="absolute bottom-0 left-0 w-full p-2 flex 
+            justify-around">
             
             <button
               onClick={(e) => playAudio(e, word.audioUrl)} 
-              className="text-white text-sm bg-gray-800 px-2 py-1 rounded 
-                hover:bg-gray-700">
-              🔊
+              className="px-4 py-2 hover:bg-gray-500 text-sm rounded">
+              
+              <PiSpeakerHigh 
+                className="text-amber-50"
+              />
+              
             </button>
           </div>
         </div>
@@ -92,57 +99,11 @@ const CardFlip = ({word}: CardProps) => {
 
           onMouseEnter={(e) => {
             e.stopPropagation()
-            setMenuOpen(false)
           }}
           onMouseLeave={(e) => {
             e.stopPropagation()
-            setMenuOpen(false)
           }}
         >       
-          {/* Botão Hambúrguer */}
-          <button 
-            className="absolute top-2 left-2 text-white text-xl bg-gray- 
-              px-2 py-1 rounded hover:bg-gray-700" 
-            onClick={(e) =>{
-              e.stopPropagation()
-              setMenuOpen(!menuOpen)
-            }}
-          >
-             ☰
-          </button>
-          
-          {menuOpen &&(
-            <div className="absolute top-12 left-2 bg-gray-800 rounded-lg 
-              shadow-lg flex flex-col"
-                 onClick={(e) => e.stopPropagation()}
-            >
-              <button 
-                onClick={handleEdit}
-                className="px-4 py-2 hover:bg-gray-700 text-sm"
-              >
-                ✏️ Editar
-              </button>
-
-              <button 
-                onClick={handleDelete}
-                className="px-4 py-2 hover:bg-gray-700 text-sm"
-              >
-                🗑️ Excluir
-              </button>
-
-              <button 
-                onClick={handleTranslate}
-                className="px-4 py-2 hover:bg-gray-700 text-sm"
-              >
-                🌐 {
-                showTranslation ? 
-                  'Mostrar Tradução Inglês'
-                :
-                  'Mostrar Tradução Portugues' 
-                }
-              </button>
-            </div>
-          )}
           {/* Conteúdo principal do verso */}
           <div className="">
             {
@@ -167,6 +128,38 @@ const CardFlip = ({word}: CardProps) => {
               ))
             }
           </div>
+
+
+            {/* Botões fixos no rodapé */}
+          <div className="absolute bottom-0 left-0 w-full flex 
+            justify-around items-center p-3">
+            
+            <button 
+              onClick={handleEdit}
+              className="px-4 py-2 hover:bg-gray-700 text-sm rounded"
+            >
+              <CiEdit />
+            </button>
+
+            <button 
+              onClick={handleDelete}
+              className="px-4 py-2 hover:bg-gray-700 text-sm rounded"
+            >
+              <MdDeleteOutline /> 
+            </button>
+
+            <button 
+              onClick={handleTranslate}
+              className="px-4 py-2 hover:bg-gray-700 text-sm rounded"
+            >
+              {
+                showTranslation ? <LiaEyeSolid /> : <LiaEyeSlashSolid />
+              }
+            </button>
+
+          </div>
+
+
         </div>
       </div>
 		</div>
