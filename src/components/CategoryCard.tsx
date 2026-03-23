@@ -13,12 +13,15 @@ const CategoryCard = ({ category }: Props) => {
     <Link
       to={`/profile/${user?.id}/category/${category.id}`}
       className="rounded-2xl 
-          bg-linear-to-l from bg-gray-900 to-blue-800 
-          text-white shadow-lg
-          flex items-center justify-center text-lg font-medium
-          hover:scale-105 hover:shadow-2xl transition"
+        w-full aspect-5/8
+        bg-linear-to-l from-gray-900 to-blue-800
+        text-white shadow-lg p-4
+        flex justify-center items-center
+        hover:scale-105 hover:shadow-2xl transition"
     >
-      {category.name}
+      <p className="font-semibold leading-tight text-center whitespace-nowrap text-[clamp(0.78rem,2.5vw,1.25rem)]">
+        {category.name}
+      </p>
     </Link>
   )
 }

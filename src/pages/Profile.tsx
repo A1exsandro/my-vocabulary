@@ -7,13 +7,13 @@ const Profile = () => {
 
   return (
     <div className="">
-      <div className="flex justify-center gap-6 mt-10">
+      <div className="grid grid-cols-2 gap-4 mt-10 max-w-xl mx-auto px-4">
         <Link
           to={`/profile/${user?.id}/categories/`}
-          className="w-40 h-56 rounded-2xl 
-          bg-linear-to-r from bg-gray-900 to-blue-800 
+          className="w-full aspect-5/8 rounded-2xl 
+          bg-linear-to-r from-gray-900 to-blue-800 
           text-white shadow-lg
-          flex items-center justify-center text-lg font-medium
+          flex items-center justify-center font-medium text-[clamp(0.85rem,2.5vw,1.125rem)] whitespace-nowrap
           hover:scale-105 hover:shadow-2xl transition"
         >
           Categorias
@@ -21,10 +21,10 @@ const Profile = () => {
 
         <Link
           to={`.`}
-          className="w-40 h-56 rounded-2xl 
-          bg-linear-to-l from bg-gray-900 to-blue-800 
+          className="w-full aspect-5/8 rounded-2xl 
+          bg-linear-to-l from-gray-900 to-blue-800 
           text-white shadow-lg
-          flex items-center justify-center text-lg font-medium
+          flex items-center justify-center font-medium text-[clamp(0.85rem,2.5vw,1.125rem)] whitespace-nowrap
           hover:scale-105 hover:shadow-2xl transition"
         >
           Classes

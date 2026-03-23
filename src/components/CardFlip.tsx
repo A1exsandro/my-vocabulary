@@ -94,8 +94,8 @@ const CardFlip = ({word}: CardProps) => {
         {/* Verso */}
         <div 
           className="absolute w-full h-full backface-hidden rotate-y-180 
-            rounded-xl bg-gray-900 text-white p-4 flex flex-col 
-            justify-center items-center text-center shadow-lg"
+            rounded-xl bg-gray-900 text-white p-3 sm:p-4 flex flex-col 
+            items-center text-center shadow-lg overflow-hidden"
 
           onMouseEnter={(e) => {
             e.stopPropagation()
@@ -105,23 +105,27 @@ const CardFlip = ({word}: CardProps) => {
           }}
         >       
           {/* Conteúdo principal do verso */}
-          <div className="">
+          <div className="w-full px-1">
             {
               showTranslation ?
-                <p className="text-lg font-semibold">{word.portuguese}</p>
+                <p className="text-[clamp(0.85rem,2.3vw,1.125rem)] font-semibold leading-tight break-words">
+                  {word.portuguese}
+                </p>
               :
-                <p className="text-lg font-semibold">{word.english}</p>
+                <p className="text-[clamp(0.85rem,2.3vw,1.125rem)] font-semibold leading-tight break-words">
+                  {word.english}
+                </p>
             }
           </div>
 
           {/* Phrases */}
-          <div className="mt-8">
+          <div className="mt-3 mb-12 w-full flex-1 overflow-y-auto px-1 lg:px-3 flex flex-col items-center">
             {
               word.phrases.map((phrase: Phrase) => (
                 <div 
                   key={phrase.id}
                   onClick={(e) => playAudio(e, phrase.audioUrl)}
-                  className="text-[0.7rem] m-2 hover:cursor-pointer hover:scale-105"
+                  className="text-[clamp(0.62rem,1.7vw,0.72rem)] my-1.5 hover:cursor-pointer break-words text-center max-w-[95%] lg:max-w-[88%] leading-tight"
                 >
                   {showTranslation ? "Iremos adicionar a tradução" : phrase.text}
                 </div>

@@ -93,12 +93,16 @@ const Categories = () => {
 
 			{/* Lista */}
 				<Grid>
-
-					{categories.map((category) => (
-						<CategoryCard key={category.id} category={category} />
-					))}
-
+          {categories.map((category) => (
+            <CategoryCard key={category.id} category={category} />
+          ))}
 				</Grid>
+
+        {!isLoading && categories.length === 0 && (
+          <div className="mt-8 rounded-xl border border-gray-200 bg-white p-6 text-center text-gray-500">
+            Nenhuma categoria encontrada para este usuário.
+          </div>
+        )}
 
           <CreateItemModal
             title="Nova Categoria"

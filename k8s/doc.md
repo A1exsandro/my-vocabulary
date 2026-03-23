@@ -3,5 +3,5 @@
 docker login registry.nst.art.br
 
 # Build
-docker build -t registry.nst.art.br/vocabulary-app:0.0.2 -f Dockerfile .
-docker push registry.nst.art.br/vocabulary-app:0.0.2
+docker build -t registry.nst.art.br/vocabulary-app:0.0.3 -f Dockerfile .
+docker push registry.nst.art.br/vocabulary-app:0.0.3
