@@ -108,26 +108,29 @@ const CardFlip = ({word}: CardProps) => {
           <div className="w-full px-1">
             {
               showTranslation ?
-                <p className="text-[clamp(0.85rem,2.3vw,1.125rem)] font-semibold leading-tight break-words">
+                <p className="mt-5 text-[clamp(0.85rem,2.3vw,1.125rem)] font-semibold leading-tight break-words">
                   {word.portuguese}
                 </p>
               :
-                <p className="text-[clamp(0.85rem,2.3vw,1.125rem)] font-semibold leading-tight break-words">
+                <p className="mt-5 text-[clamp(0.85rem,2.3vw,1.125rem)] font-semibold leading-tight break-words">
                   {word.english}
                 </p>
             }
           </div>
 
           {/* Phrases */}
-          <div className="mt-3 mb-12 w-full flex-1 overflow-y-auto px-1 lg:px-3 flex flex-col items-center">
+          <div className="mt-3 mb-12 w-full flex-1 overflow-y-auto px-1 lg:px-3 flex flex-col items-center justify-center">
             {
               word.phrases.map((phrase: Phrase) => (
                 <div 
                   key={phrase.id}
                   onClick={(e) => playAudio(e, phrase.audioUrl)}
-                  className="text-[clamp(0.62rem,1.7vw,0.72rem)] my-1.5 hover:cursor-pointer break-words text-center max-w-[95%] lg:max-w-[88%] leading-tight"
+                  className="text-[clamp(0.62rem,1.7vw,0.72rem)] my-1.5 hover:cursor-pointer break-words 
+                    text-center max-w-[95%] lg:max-w-[88%] leading-tight"
                 >
-                  {showTranslation ? "Iremos adicionar a tradução" : phrase.text}
+                  <div className="">
+                    {showTranslation ? "Iremos adicionar a tradução" : phrase.text}
+                  </div>
                 </div>
               ))
             }

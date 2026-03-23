@@ -20,7 +20,7 @@ const Card = ({ user, categoriesCount, wordsCount }: CardProps) => {
         w-full aspect-5/8
         bg-linear-to-l from-gray-900 to-blue-800
         text-white shadow-lg p-3 sm:p-4 overflow-hidden
-        flex flex-col justify-between
+        flex flex-col justify-between sm:justify-start
         hover:scale-105 hover:shadow-2xl transition"
     >
       <div className="flex items-center gap-2 sm:gap-3 min-w-0">
@@ -29,16 +29,13 @@ const Card = ({ user, categoriesCount, wordsCount }: CardProps) => {
         </div>
 
         <div className="min-w-0">
-          <p className="text-[clamp(0.68rem,1.8vw,0.75rem)] text-blue-100/90">
-            Usuário
-          </p>
           <p className="font-semibold leading-tight whitespace-nowrap text-[clamp(0.5rem,1.9vw,1rem)]">
             {user.name}
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 min-[380px]:grid-cols-2 gap-1.5 sm:gap-2 text-[clamp(0.56rem,1.6vw,0.75rem)]">
+      <div className="grid grid-cols-1 min-[380px]:grid-cols-2 gap-1.5 sm:gap-2 text-[clamp(0.56rem,1.6vw,0.75rem)] sm:my-auto">
         <div className="bg-white/10 rounded-lg p-1.5 sm:p-2 border border-white/20 min-w-0 overflow-hidden">
           <p className="flex items-center gap-1 text-blue-100">
             <FolderKanban size={10} />

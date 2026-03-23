@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { FaArrowCircleRight } from "react-icons/fa"
 import { FaArrowCircleLeft } from "react-icons/fa"
@@ -7,6 +8,8 @@ import { GrDocumentConfig } from "react-icons/gr"
 import { FiLogOut } from "react-icons/fi"
 import useAuthStore from "../store/useAuthStore"
 import kc from "../service/keycloak"
+import type { Category } from "../types/category"
+import { getCategoriesByUser } from "../service/categoryApi"
 
 type SidebarProps = {
   open: boolean
@@ -15,6 +18,8 @@ type SidebarProps = {
 
 export default function Sidebar({ open, setOpen }: SidebarProps) {
   const navigate = useNavigate()
+  const [categories, setCategories] = useState<Category[]>([])
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false)
 
   const goHistory = (value: number) => {
     setOpen(false)
@@ -28,6 +33,33 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
     logout()
     kc.logout({ redirectUri: window.location.origin })
   }
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadCategories = async () => {
+      if (!user?.id) {
+        if (isMounted) setCategories([])
+        return
+      }
+
+      try {
+        const data = await getCategoriesByUser(user.id)
+        if (isMounted) setCategories(data)
+      } catch (error) {
+        console.error("Erro ao carregar categorias do menu:", error)
+        if (isMounted) setCategories([])
+      }
+    }
+
+    if (open) {
+      void loadCategories()
+    }
+
+    return () => {
+      isMounted = false
+    }
+  }, [open, user?.id])
 
   return (
     <div
@@ -66,15 +98,46 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
           Perfil
         </li>
 
-        <li 
-          onClick={() => {
-            setOpen(false)
-            navigate(`/profile/${user?.id}/categories`)
-          }}
-          className="flex items-center gap-2 hover:text-blue-600 cursor-pointer"
-        >
-          <GrDocumentConfig />
-          Categorias
+        <li>
+          <button
+            onClick={() => {
+              setIsCategoriesOpen((prev) => !prev)
+            }}
+            className="w-full flex items-center justify-between gap-2 hover:text-blue-600 cursor-pointer"
+          >
+            <span className="flex items-center gap-2">
+              <GrDocumentConfig />
+              Categorias
+            </span>
+            <span className="text-xs">{isCategoriesOpen ? "▲" : "▼"}</span>
+          </button>
+
+          {isCategoriesOpen && (
+            <ul className="mt-2 ml-5 space-y-2 border-l border-white/20 pl-3">
+              <li
+                onClick={() => {
+                  setOpen(false)
+                  navigate(`/profile/${user?.id}/categories`)
+                }}
+                className="text-sm hover:text-blue-300 cursor-pointer"
+              >
+                Ver todas
+              </li>
+
+              {categories.map((category) => (
+                <li
+                  key={category.id}
+                  onClick={() => {
+                    setOpen(false)
+                    navigate(`/profile/${user?.id}/category/${category.id}`)
+                  }}
+                  className="text-sm hover:text-blue-300 cursor-pointer"
+                >
+                  {category.name}
+                </li>
+              ))}
+            </ul>
+          )}
         </li>
 
         <div 

@@ -9,10 +9,12 @@ import LoadingScreen from "../components/LoadingScreen"
 import type { Word } from "../types/word"
 import { createWord, getWordsByCategory } from "../service/wordApi"
 import CreateItemModal from "../components/CreateItemModal"
+import { getCategoriesByUser } from "../service/categoryApi"
 
 const Category = () => {
   const { categoryId, userId } = useParams()
   const [words, setWords] = useState<Word[]>([])
+  const [categoryTitle, setCategoryTitle] = useState("Categoria")
   const [newWord, setNewWord] = useState("")
 	const [showForm, setShowForm] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -49,6 +51,34 @@ const Category = () => {
     }
   }, [categoryId, userId])
 
+  useEffect(() => {
+    let isMounted = true
+
+    const loadCategoryTitle = async () => {
+      if (!userId || !categoryId) return
+
+      try {
+        const categories = await getCategoriesByUser(userId)
+        const currentCategory = categories.find((category) => category.id === categoryId)
+
+        if (isMounted) {
+          setCategoryTitle(currentCategory?.name || "Categoria")
+        }
+      } catch (error) {
+        console.error("Erro ao carregar título da categoria:", error)
+        if (isMounted) {
+          setCategoryTitle("Categoria")
+        }
+      }
+    }
+
+    void loadCategoryTitle()
+
+    return () => {
+      isMounted = false
+    }
+  }, [categoryId, userId])
+
   const addNewWord =  async() => {
     if (!newWord.trim()) return toast.warning('O campo não pode ser vazio!')
     if (!userId || !categoryId) return toast.error("Categoria ou usuário inválido.")
@@ -76,6 +106,7 @@ const Category = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4">
+      <h1 className="text-2xl font-semibold text-gray-800 mb-4">{categoryTitle}</h1>
 
       {/* Loading */}
       {
