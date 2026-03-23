@@ -1,81 +1,73 @@
 import { useParams } from "react-router-dom"
 import CategoryCard from "../components/CategoryCard"
 import { useEffect, useState } from "react"
-import axios from "axios"
 import { toast } from 'react-toastify'
 import Grid from "../components/Grid"
 import LoadingScreen from "../components/LoadingScreen"
 import type { Category } from "../types/category"
-
-
-const BASE_URL_API = import.meta.env.VITE_BASE_URL_API
+import CreateItemModal from "../components/CreateItemModal"
+import { createCategory, getCategoriesByUser } from "../service/categoryApi"
 
 const Categories = () => {
   const { userId } = useParams()
-  
-  
-	const [categories, setCategories] = useState<Category[]>([]) 
+	const [categories, setCategories] = useState<Category[]>([])
 	const [newCategory, setNewCategory] = useState("")
 	const [showForm, setShowForm] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  
 
-
-  useEffect(() => {
-    fetchCategories()
-  }, [isSuccess])
-
-  // READ
   const fetchCategories = async () => {
+    if (!userId) return
     try {
-      const response = await axios.get<Category[]>(
-        `${BASE_URL_API}/api/vacabulary/category/categories_by_user`,
-        {
-          params: {
-            user_id: userId
-          }
-        }
-      )
-
-      console.log('---- resposta vindo da Api-----', response.data)
-      setCategories(response.data)
-      setIsLoading(false)
+      const data = await getCategoriesByUser(userId)
+      setCategories(data)
     } catch (error) {
-      console.log('---- error ----', error)
+      console.error("Erro ao buscar categorias:", error)
+      toast.error("Não foi possível carregar as categorias.")
     }
   }
 
+  useEffect(() => {
+    let isMounted = true
 
-  // - [ ] Remover para o hook
-  // CREATE
+    const load = async () => {
+      if (!userId) return
+      try {
+        const data = await getCategoriesByUser(userId)
+        if (isMounted) setCategories(data)
+      } catch (error) {
+        console.error("Erro ao buscar categorias:", error)
+        toast.error("Não foi possível carregar as categorias.")
+      }
+    }
+
+    void load()
+
+    return () => {
+      isMounted = false
+    }
+  }, [userId])
+
   const addNewCategory =  async() => {
-    if (!newCategory) return toast.warning('O campo não pode ser vazio!')
-      
-  
+    if (!newCategory.trim()) return toast.warning('O campo não pode ser vazio!')
+    if (!userId) return toast.error("Usuário inválido para criação da categoria.")
+
     setIsLoading(true)
 
     try {
-
       setShowForm(false)
-      
-      const response = await axios.post(`${BASE_URL_API}/api/vacabulary/category`, 
-        {
-          name: newCategory,
-          user_id: userId
-        }
-      )
+      const response = await createCategory({
+        name: newCategory.trim(),
+        userId,
+      })
 
       setIsLoading(false)
-      toast.success(response.data.detail)
-      setIsSuccess(true)
-      console.log(response)
+      toast.success(response.detail ?? "Categoria criada com sucesso.")
+      await fetchCategories()
       setNewCategory('')
     } catch (error) {
       setIsLoading(false)
-      // - [ ] tratar o erro e mostrar a mensagem ao usuário
       toast.error('Algum erro aconteceu!')
-      console.log('----- error ---', error)
+      console.error('Erro ao criar categoria:', error)
     }
   }
 
@@ -108,46 +100,15 @@ const Categories = () => {
 
 				</Grid>
 
-          {/* Formulário Para Criar uma Nova Categoria */}
-          {/* - [ ] Remover para um componente, e chamar o componente aqui */}
-          {showForm && (
-            <div 
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm flex 
-                items-center justify-center"
-            >
-              
-              <div className="bg-white p-6 rounded shadow-lg w-80">
-                
-                <h2 className="text-lg font-bold mb-4">
-                  Nova Palavra
-                </h2>
-
-                <input
-                  value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value)}
-                  className="border w-full p-2 mb-4"
-                  placeholder="Digite a palavra"
-                />
-
-                <div className="flex gap-2">
-                  <button
-                    onClick={addNewCategory}
-                    className="bg-green-500 text-white px-4 py-2 rounded"
-                  >
-                    Adicionar
-                  </button>
-
-                  <button
-                    onClick={() => setShowForm(false)}
-                    className="bg-gray-400 text-white px-4 py-2 rounded"
-                  >
-                    Cancelar
-                  </button>
-                </div>
-
-              </div>
-            </div>
-          )}
+          <CreateItemModal
+            title="Nova Categoria"
+            placeholder="Digite o nome da categoria"
+            value={newCategory}
+            isOpen={showForm}
+            onChange={setNewCategory}
+            onConfirm={addNewCategory}
+            onClose={() => setShowForm(false)}
+          />
 				</div>
 	)
 }

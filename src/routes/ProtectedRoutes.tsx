@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react"
-import { useRef } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Outlet } from "react-router-dom"
 import LoadingScreen from "../components/LoadingScreen"
 import kc from "../service/keycloak"
@@ -17,10 +16,10 @@ const ProtectedRoutes = () => {
   const initialized = useRef(false)
 
   // ===== Função de logout centralizada =====
-  const doLogout = () => {
+  const doLogout = useCallback(() => {
     console.warn("Encerrando sessão...")
     kc.logout({ redirectUri: window.location.origin })
-  }
+  }, [])
 
   // ===== Inicialização do Keycloak =====
   useEffect(() => {
@@ -66,7 +65,7 @@ const ProtectedRoutes = () => {
         console.error("Authentication Failed", error)
         setAuthenticated(false)
       })
-  }, [])
+  }, [doLogout, login, setLoading])
 
   // ===== Controle de inatividade =====
   useEffect(() => {
@@ -94,7 +93,7 @@ const ProtectedRoutes = () => {
       window.removeEventListener("mousemove", resetIdleTimer)
       window.removeEventListener("keydown", resetIdleTimer)
     }
-  }, [isIdle])
+  }, [doLogout, isIdle])
 
   // ===== Renovação proativa do token =====
   useEffect(() => {
@@ -109,7 +108,7 @@ const ProtectedRoutes = () => {
     }, RENEW_INTERVAL_MS)
 
     return () => clearInterval(intervalId)
-  }, [authenticated, isIdle])
+  }, [authenticated, doLogout, isIdle])
 
   if (authenticated === null) {
     return (

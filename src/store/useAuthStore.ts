@@ -1,9 +1,5 @@
 import { create } from "zustand"
-
-interface User { 
-  name: string
-  id?: string
-}
+import type { User } from "../types/user"
 
 interface AuthState {
   user: User | null

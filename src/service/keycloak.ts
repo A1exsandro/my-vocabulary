@@ -10,6 +10,6 @@ const keycloakConfig = {
   clientId: CLIENT_ID
 }
 
-let kc = new Keycloak(keycloakConfig)
+const kc = new Keycloak(keycloakConfig)
 
 export default kc

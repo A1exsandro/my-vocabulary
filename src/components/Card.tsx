@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom"
-// import type { Category } from "../types/category"
+import type { User } from "../types/user"
 
-// interface Props {
-//   category: Category
-// }
+interface CardProps {
+  user: User | null
+}
 
-const Card = ({ user }: any) => {
+const Card = ({ user }: CardProps) => {
+  if (!user?.id) return null
+
   return (
     <Link
       to={`/profile/${user.id}`}

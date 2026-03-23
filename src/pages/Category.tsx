@@ -1,4 +1,3 @@
-import axios from "axios"
 import { toast } from 'react-toastify'
 
 import { useParams } from "react-router-dom"
@@ -8,72 +7,70 @@ import { useEffect, useState } from "react"
 import Grid from "../components/Grid"
 import LoadingScreen from "../components/LoadingScreen"
 import type { Word } from "../types/word"
-
-const BASE_URL_API = import.meta.env.VITE_BASE_URL_API
+import { createWord, getWordsByCategory } from "../service/wordApi"
+import CreateItemModal from "../components/CreateItemModal"
 
 const Category = () => {
   const { categoryId, userId } = useParams()
   const [words, setWords] = useState<Word[]>([])
   const [newWord, setNewWord] = useState("")
 	const [showForm, setShowForm] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    fetchWords()
-  }, [isSuccess])
-
-  // READ
   const fetchWords = async () => {
-
+    if (!userId || !categoryId) return
     try {
-
-      const response = await axios.get<Word[]>(
-        `${BASE_URL_API}/api/vacabulary/word/words`,
-        {
-          params: {
-          user_id: userId,
-          category_id: categoryId
-          }
-        }
-      )
-
-      console.log('---- resposta vindo da Api-----', response.data)
-      setWords(response.data)
-      console.log(response.data)
-      // setIsLoading(false)
+      const data = await getWordsByCategory({ userId, categoryId })
+      setWords(data)
     } catch (error) {
-      console.log('---- error ----', error)
+      console.error("Erro ao buscar palavras:", error)
+      toast.error("Não foi possível carregar as palavras.")
     }
   }
 
-  // - [ ] Remover para o hook
-  // CREATE
+  useEffect(() => {
+    let isMounted = true
+
+    const load = async () => {
+      if (!userId || !categoryId) return
+      try {
+        const data = await getWordsByCategory({ userId, categoryId })
+        if (isMounted) setWords(data)
+      } catch (error) {
+        console.error("Erro ao buscar palavras:", error)
+        toast.error("Não foi possível carregar as palavras.")
+      }
+    }
+
+    void load()
+
+    return () => {
+      isMounted = false
+    }
+  }, [categoryId, userId])
+
   const addNewWord =  async() => {
-    if (!newWord) return toast.warning('O campo não pode ser vazio!')
+    if (!newWord.trim()) return toast.warning('O campo não pode ser vazio!')
+    if (!userId || !categoryId) return toast.error("Categoria ou usuário inválido.")
 
     setIsLoading(true)
 
     try {
       setShowForm(false)
-      const response = await axios.post(`${BASE_URL_API}/api/vacabulary/word`, 
-        {
-          english: newWord,
-          user_id: userId,
-          category_id: categoryId
-        }
-      )
+      const response = await createWord({
+        english: newWord.trim(),
+        userId,
+        categoryId,
+      })
 
       setIsLoading(false)
-      toast.success(response.data.detail)
-      setIsSuccess(true)
-      console.log(response)
+      toast.success(response.detail ?? "Palavra criada com sucesso.")
+      await fetchWords()
       setNewWord('')
     } catch (error) {
       setIsLoading(false)
-      // - [ ] tratar o erro e mostrar a mensagem ao usuário
       toast.error('Algum erro aconteceu!')
-      console.log('----- error ---', error)
+      console.error('Erro ao criar palavra:', error)
     }
   }
 
@@ -107,46 +104,15 @@ const Category = () => {
         ))}
       </Grid>
 
-        {/* Formulário Para Criar uma Nova Categoria */}
-        {/* - [ ] Remover para um componente, e chamar o componente aqui */}
-        {showForm && (
-          <div 
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm flex 
-              items-center justify-center"
-          >
-            
-            <div className="bg-white p-6 rounded shadow-lg w-80">
-              
-              <h2 className="text-lg font-bold mb-4">
-                Nova Palavra
-              </h2>
-
-              <input
-                value={newWord}
-                onChange={(e) => setNewWord(e.target.value)}
-                className="border w-full p-2 mb-4"
-                placeholder="Digite a palavra"
-              />
-
-              <div className="flex gap-2">
-                <button
-                  onClick={addNewWord}
-                  className="bg-green-500 text-white px-4 py-2 rounded"
-                >
-                  Adicionar
-                </button>
-
-                <button
-                  onClick={() => setShowForm(false)}
-                  className="bg-gray-400 text-white px-4 py-2 rounded"
-                >
-                  Cancelar
-                </button>
-              </div>
-
-            </div>
-          </div>
-        )}
+      <CreateItemModal
+        title="Nova Palavra"
+        placeholder="Digite a palavra"
+        value={newWord}
+        isOpen={showForm}
+        onChange={setNewWord}
+        onConfirm={addNewWord}
+        onClose={() => setShowForm(false)}
+      />
       </div>
   );
 }

@@ -21,10 +21,7 @@ export default function Home() {
 				</div> */}
 
 				<Grid>
-					<Card 
-						key={user?.id} 
-						user={user} 
-					/>
+          <Card user={user} />
 				</Grid>
 			</div>
 		
