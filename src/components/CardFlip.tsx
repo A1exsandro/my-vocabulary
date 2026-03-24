@@ -10,7 +10,7 @@ interface CardProps {
   word: Word
 }
 
-const CardFlip = ({word}: CardProps) => {
+const CardFlip = ({word}: CardProps) => { 
   const [flipped, setFlipped] = useState(false)
 
   const [showTranslation, setShowTranslation] = useState(false)
@@ -129,7 +129,7 @@ const CardFlip = ({word}: CardProps) => {
                     text-center max-w-[95%] lg:max-w-[88%] leading-tight"
                 >
                   <div className="">
-                    {showTranslation ? "Iremos adicionar a tradução" : phrase.text}
+                    {showTranslation ? phrase.translation : phrase.text}
                   </div>
                 </div>
               ))
