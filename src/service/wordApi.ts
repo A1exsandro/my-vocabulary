@@ -17,7 +17,7 @@ type CreateWordResponse = {
 }
 
 export const getWordsByCategory = async ({ userId, categoryId }: GetWordsPayload) => {
-  const response = await apiClient.get<Word[]>("/api/vacabulary/word/words", {
+  const response = await apiClient.get<Word[]>("/api/vocabulary/word/words", {
     params: {
       user_id: userId,
       category_id: categoryId,
@@ -28,7 +28,7 @@ export const getWordsByCategory = async ({ userId, categoryId }: GetWordsPayload
 }
 
 export const createWord = async ({ english, userId, categoryId }: CreateWordPayload) => {
-  const response = await apiClient.post<CreateWordResponse>("/api/vacabulary/word", {
+  const response = await apiClient.post<CreateWordResponse>("/api/vocabulary/word", {
     english,
     user_id: userId,
     category_id: categoryId,
