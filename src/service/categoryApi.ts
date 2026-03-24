@@ -12,7 +12,7 @@ type CreateCategoryResponse = {
 
 export const getCategoriesByUser = async (userId: string) => {
   const response = await apiClient.get<Category[]>(
-    "/api/vacabulary/category/categories_by_user",
+    "/api/vocabulary/category/categories_by_user",
     {
       params: {
         user_id: userId,
@@ -24,7 +24,7 @@ export const getCategoriesByUser = async (userId: string) => {
 }
 
 export const createCategory = async ({ name, userId }: CreateCategoryPayload) => {
-  const response = await apiClient.post<CreateCategoryResponse>("/api/vacabulary/category", {
+  const response = await apiClient.post<CreateCategoryResponse>("/api/vocabulary/category", {
     name,
     user_id: userId,
   })
